@@ -4,7 +4,7 @@ Ordered by priority. Items marked *(nice to have)* come last.
 
 ## 1. Housekeeping
 - [x] `git init`, add a sensible `.gitignore` (node_modules, dist), make the first commit (done, branch `main`)
-- [ ] Push to a remote repo (GitHub) so there is a backup
+- [x] Push to a remote repo (GitHub) so there is a backup (github.com/lakorunna/globetros, public)
 - [ ] Replace the Vite-template README with a real one (what it is, `npm run dev`, `npm run extract`)
 
 ## 2. Hosting
