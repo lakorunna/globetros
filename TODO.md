@@ -13,10 +13,10 @@ Ordered by priority. Items marked *(nice to have)* come last.
 - [ ] Point globetros.dk at it (DNS + HTTPS)
 
 ## 3. Update anything out of date
-- [ ] Run `npm outdated` and update dependencies (React, Vite, react-leaflet, eslint, etc.)
-- [ ] Run `npm run lint` and `npm run build`, fix any warnings
-- [ ] Check that the Stamen Watercolor tile source still works and is correctly credited (see Map below)
-- [ ] Remove unused template leftovers (`src/assets/react.svg`, `vite.svg`, `hero.png` if unused)
+- [x] Run `npm outdated` and update dependencies (done; held back eslint 10 and pdf-parse 2, both major bumps with no pressing need)
+- [x] Run `npm run lint` and `npm run build`, fix any warnings (lint is clean; build warns the JS bundle is 571 kB, worth code-splitting later)
+- [ ] Stamen Watercolor tiles come from Stadia Maps; check their free-tier terms and whether production at globetros.dk needs an API key or domain registration (see Map below)
+- [x] Remove unused template leftovers (`src/assets/*`, `public/icons.svg`)
 
 ## 4. Content and data
 - [ ] Add photos: populate the `photos` array in `src/data/entries.json` and show them in the journal panel (gallery)

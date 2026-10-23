@@ -5,11 +5,12 @@ export default function JournalPanel({ entry, prevEntry, nextEntry, onClose, onN
   const bodyRef = useRef(null);
 
   // Scroll back to top whenever a new entry opens
+  const entryId = entry?.id;
   useEffect(() => {
-    if (entry && bodyRef.current) {
+    if (entryId && bodyRef.current) {
       bodyRef.current.scrollTop = 0;
     }
-  }, [entry?.id]);
+  }, [entryId]);
 
   // Close on Escape key
   useEffect(() => {
