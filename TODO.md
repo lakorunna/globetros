@@ -48,3 +48,8 @@ Ordered by priority. Items marked *(nice to have)* come last.
 - [ ] Guest book: show the old entries
 - [ ] Guest book: allow new entries (needs a backend or service, and moderation/spam protection)
 - [ ] Historical weather data for each entry's place and date, if a source is available
+- [ ] Narrator voice: read the entries aloud (text-to-speech or a recorded/generated voice), with play/pause in the journal panel
+- [ ] Spelling-corrected version: show the raw original by default, with a toggle to a cleaned-up spelling/language version (keep the original text as the source of truth, e.g. a `textCorrected` field per entry)
+
+## 10. Very last: playful retellings
+- [ ] Alternative versions of the entries in different voices, selectable in the journal panel: a wise old man, a Disneyfied version, and other ideas
