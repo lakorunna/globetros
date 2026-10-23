@@ -1,0 +1,209 @@
+.journal-panel {
+  height: 100vh;
+  width: 100%;
+  background: var(--parchment);
+  border-left: 2px solid var(--parchment-shadow);
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  position: relative;
+}
+
+/* Subtle ruled-line texture across the whole panel */
+.journal-panel::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background-image: repeating-linear-gradient(
+    0deg,
+    transparent,
+    transparent 27px,
+    rgba(139, 58, 26, 0.07) 28px
+  );
+  pointer-events: none;
+  z-index: 0;
+}
+
+/* Header */
+.journal-panel__header {
+  position: relative;
+  z-index: 1;
+  padding: 20px 24px 14px;
+  border-bottom: 1px solid var(--parchment-shadow);
+  background: var(--parchment-dark);
+  flex-shrink: 0;
+}
+
+.journal-panel__meta {
+  display: flex;
+  align-items: baseline;
+  gap: 10px;
+  margin-bottom: 6px;
+  width: 100%;
+}
+
+.journal-panel__country {
+  font-family: var(--font-heading);
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--rust);
+}
+
+.journal-panel__entry-num {
+  font-family: var(--font-heading);
+  font-size: 11px;
+  color: var(--ink-faded);
+}
+
+.journal-panel__date {
+  font-family: var(--font-body);
+  font-style: italic;
+  font-size: 11px;
+  color: var(--ink-faded);
+  margin-left: auto;
+}
+
+.journal-panel__title {
+  font-family: var(--font-heading);
+  font-size: 20px;
+  font-weight: 600;
+  color: var(--ink);
+  line-height: 1.25;
+  margin-bottom: 4px;
+}
+
+.journal-panel__location {
+  font-family: var(--font-body);
+  font-style: italic;
+  font-size: 13px;
+  color: var(--ink-faded);
+}
+
+/* Close button */
+.journal-panel__close {
+  position: absolute;
+  top: 14px;
+  right: 16px;
+  width: 32px;
+  height: 32px;
+  background: none;
+  border: 1px solid var(--parchment-shadow);
+  border-radius: 50%;
+  cursor: pointer;
+  font-family: var(--font-heading);
+  font-size: 16px;
+  color: var(--ink-faded);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background 0.15s, color 0.15s;
+  line-height: 1;
+  z-index: 2;
+}
+
+.journal-panel__close:hover {
+  background: var(--parchment-shadow);
+  color: var(--ink);
+}
+
+/* Scrollable text body */
+.journal-panel__body {
+  position: relative;
+  z-index: 1;
+  flex: 1;
+  overflow-y: auto;
+  padding: 24px 28px 32px;
+  scrollbar-width: thin;
+  scrollbar-color: var(--parchment-shadow) transparent;
+}
+
+.journal-panel__body::-webkit-scrollbar {
+  width: 6px;
+}
+
+.journal-panel__body::-webkit-scrollbar-thumb {
+  background: var(--parchment-shadow);
+  border-radius: 3px;
+}
+
+.journal-panel__text {
+  font-family: var(--font-body);
+  font-size: 15px;
+  line-height: 1.75;
+  color: var(--ink);
+  white-space: pre-wrap;
+  word-break: break-word;
+}
+
+/* Prev / Next navigation footer */
+.journal-panel__nav {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  padding: 10px 20px 12px;
+  border-top: 1px solid var(--parchment-shadow);
+  background: var(--parchment-dark);
+  flex-shrink: 0;
+}
+
+.journal-panel__nav-btn {
+  font-family: var(--font-heading);
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  color: var(--ink);
+  background: var(--parchment);
+  border: 1px solid var(--parchment-shadow);
+  padding: 5px 14px;
+  cursor: pointer;
+  transition: background 0.15s, color 0.15s;
+  min-width: 64px;
+}
+
+.journal-panel__nav-btn:hover:not(:disabled) {
+  background: var(--rust);
+  color: #fff;
+  border-color: var(--rust);
+}
+
+.journal-panel__nav-btn:disabled {
+  opacity: 0.35;
+  cursor: default;
+}
+
+.journal-panel__nav-pos {
+  font-family: var(--font-heading);
+  font-size: 11px;
+  color: var(--ink-faded);
+  letter-spacing: 0.08em;
+}
+
+/* Photo gallery — hidden until photos are added */
+.journal-panel__gallery {
+  position: relative;
+  z-index: 1;
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+  gap: 8px;
+  padding: 0 28px 28px;
+  flex-shrink: 0;
+}
+
+.journal-panel__photo {
+  width: 100%;
+  aspect-ratio: 4/3;
+  object-fit: cover;
+  border: 1px solid var(--parchment-shadow);
+  border-radius: 2px;
+  box-shadow: 1px 1px 3px rgba(0, 0, 0, 0.2);
+  cursor: pointer;
+}
+
+.journal-panel__photo:hover {
+  box-shadow: 2px 2px 6px rgba(0, 0, 0, 0.35);
+}

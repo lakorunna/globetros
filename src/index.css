@@ -1,0 +1,66 @@
+:root {
+  --parchment: #f4e9d0;
+  --parchment-dark: #e8d5a3;
+  --parchment-shadow: #d4bc84;
+  --ink: #2c1a0e;
+  --ink-faded: #6b4f3a;
+  --rust: #8b3a1a;
+  --rust-light: #b8572a;
+  --font-heading: 'Cinzel', Georgia, serif;
+  --font-body: 'IM Fell English', Georgia, serif;
+  --transition-speed: 0.4s;
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html,
+body,
+#root {
+  height: 100%;
+  width: 100%;
+  overflow: hidden;
+  background: var(--parchment);
+  color: var(--ink);
+  font-family: var(--font-body);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-rendering: optimizeLegibility;
+}
+
+/* Vintage map tile styling */
+.leaflet-tile-pane {
+  filter: sepia(0.25) saturate(0.85) brightness(0.97);
+}
+
+/* Leaflet attribution */
+.leaflet-control-attribution {
+  background: rgba(244, 233, 208, 0.88) !important;
+  font-family: var(--font-body);
+  font-size: 10px;
+  color: var(--ink-faded) !important;
+  border-top-left-radius: 4px;
+  padding: 2px 6px !important;
+}
+
+.leaflet-control-attribution a {
+  color: var(--rust) !important;
+}
+
+/* Leaflet zoom controls */
+.leaflet-control-zoom a {
+  background: var(--parchment) !important;
+  color: var(--ink) !important;
+  border-color: var(--parchment-shadow) !important;
+  font-family: var(--font-heading) !important;
+  font-size: 16px !important;
+}
+
+.leaflet-control-zoom a:hover {
+  background: var(--parchment-dark) !important;
+}
