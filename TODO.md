@@ -3,7 +3,7 @@
 Ordered by priority. Items marked *(nice to have)* come last.
 
 ## 1. Housekeeping
-- [ ] `git init`, add a sensible `.gitignore` (node_modules, dist), make the first commit
+- [x] `git init`, add a sensible `.gitignore` (node_modules, dist), make the first commit (done, branch `main`)
 - [ ] Push to a remote repo (GitHub) so there is a backup
 - [ ] Replace the Vite-template README with a real one (what it is, `npm run dev`, `npm run extract`)
 
