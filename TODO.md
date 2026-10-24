@@ -30,14 +30,16 @@ Ordered by priority. Items marked *(nice to have)* come last.
 - [ ] Test on real phone sizes, including touch targets and safe areas
 
 ## 6. Map
-- [ ] Consider switching to Mapbox (compare cost, styling options and look vs. the Watercolor feel)
-- [ ] If switching: pick a style, handle the access token and URL restrictions, migrate pins, route and country highlights
+- [x] Switched from Leaflet to MapLibre GL JS (globe view, keeps the Watercolor tiles, no token or usage bill); Mapbox not needed for now
+- [ ] Check the map on mobile and with the globe/flat toggle
+- [ ] Reduce the JS bundle (about 1.5 MB, mostly MapLibre): check Turf imports, code-split the map
 
 ## 7. Travel path
-- [ ] Past travel = solid line, future travel = dotted line, relative to the currently selected entry
-- [ ] Animate the line as you move between stories
-- [ ] Moving marker (car, plane or something else entirely) that travels along the path as you move through the entries
-  - [ ] Choose the vehicle per leg (plane between countries, bus/car overland)?
+- [x] Past travel = solid line, future travel = dotted line, relative to the currently selected entry
+- [x] Animate the line as you move between stories
+- [x] Moving marker (car, plane or something else entirely) that travels along the path as you move through the entries
+  - [x] Vehicle per leg: plane for legs over 1,200 km (great-circle arcs), van otherwise; could become a per-entry field
+  - [ ] Add waypoints so overland legs follow roads and coastlines instead of straight lines
 
 ## 8. Title screen / logo
 - [ ] Design a title screen or logo
