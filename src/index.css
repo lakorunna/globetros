@@ -33,34 +33,23 @@ body,
   text-rendering: optimizeLegibility;
 }
 
-/* Vintage map tile styling */
-.leaflet-tile-pane {
-  filter: sepia(0.25) saturate(0.85) brightness(0.97);
-}
-
-/* Leaflet attribution */
-.leaflet-control-attribution {
+/* MapLibre attribution */
+.maplibregl-ctrl-attrib {
   background: rgba(244, 233, 208, 0.88) !important;
   font-family: var(--font-body);
-  font-size: 10px;
   color: var(--ink-faded) !important;
-  border-top-left-radius: 4px;
-  padding: 2px 6px !important;
 }
 
-.leaflet-control-attribution a {
+.maplibregl-ctrl-attrib a {
   color: var(--rust) !important;
 }
 
-/* Leaflet zoom controls */
-.leaflet-control-zoom a {
+/* MapLibre controls */
+.maplibregl-ctrl-group {
   background: var(--parchment) !important;
-  color: var(--ink) !important;
-  border-color: var(--parchment-shadow) !important;
-  font-family: var(--font-heading) !important;
-  font-size: 16px !important;
+  border: 1px solid var(--parchment-shadow);
 }
 
-.leaflet-control-zoom a:hover {
+.maplibregl-ctrl-group button:hover {
   background: var(--parchment-dark) !important;
 }

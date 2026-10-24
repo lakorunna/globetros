@@ -4,10 +4,16 @@
   position: relative;
 }
 
+.map-canvas {
+  height: 100%;
+  width: 100%;
+  background: var(--parchment-dark);
+}
+
 /* Vintage pin marker */
 .vintage-pin {
-  background: transparent !important;
-  border: none !important;
+  width: 32px;
+  height: 44px;
 }
 
 .pin-body {
@@ -55,20 +61,13 @@
   color: #fff;
 }
 
-/* Route polyline — override Leaflet defaults via SVG path styling */
-.leaflet-overlay-pane path.route-line {
-  stroke-dasharray: 8, 6;
-  stroke-linecap: round;
-  stroke-linejoin: round;
-}
-
 /* Country name overlay — top-center of map when a panel is open */
 .country-overlay {
   position: absolute;
   top: 16px;
   left: 50%;
   transform: translateX(-50%);
-  z-index: 900; /* above tiles, below zoom controls */
+  z-index: 2; /* above the map canvas */
   font-family: var(--font-heading);
   font-size: 15px;
   font-weight: 600;
@@ -83,29 +82,29 @@
   white-space: nowrap;
 }
 
-/* Visited country highlight polygons */
-.country-highlight {
-  fill: rgba(139, 58, 26, 0.10);
-  stroke: rgba(139, 58, 26, 0.45);
-  stroke-width: 1.5px;
-  stroke-dasharray: 6 4;
-  stroke-linejoin: round;
+/* Moving vehicle that travels along the route */
+.vehicle span {
+  display: block;
+  font-size: 26px;
+  line-height: 1;
+  filter: drop-shadow(1px 2px 2px rgba(0, 0, 0, 0.5));
   pointer-events: none;
 }
 
-/* Country tooltip on hover */
-.pin-tooltip {
-  background: var(--parchment) !important;
-  border: 1px solid var(--parchment-shadow) !important;
-  border-radius: 3px !important;
-  font-family: var(--font-heading) !important;
-  font-size: 11px !important;
-  color: var(--ink) !important;
-  padding: 3px 8px !important;
-  box-shadow: 1px 1px 4px rgba(0, 0, 0, 0.25) !important;
+/* Pin tooltip on hover */
+.pin-tooltip .maplibregl-popup-content {
+  background: var(--parchment);
+  border: 1px solid var(--parchment-shadow);
+  border-radius: 3px;
+  font-family: var(--font-heading);
+  font-size: 11px;
+  color: var(--ink);
+  padding: 3px 8px;
+  box-shadow: 1px 1px 4px rgba(0, 0, 0, 0.25);
   white-space: nowrap;
+  pointer-events: none;
 }
 
-.pin-tooltip::before {
-  display: none !important;
+.pin-tooltip .maplibregl-popup-tip {
+  display: none;
 }
