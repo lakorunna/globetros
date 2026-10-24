@@ -44,12 +44,19 @@ Ordered by priority. Items marked *(nice to have)* come last.
 - [ ] Inspiration: Indiana Jones (map with a travelling red line), TaleSpin, The Jungle Book
 - [ ] Decide on the intro flow (title screen, then the map)
 
-## 9. Nice to have
+## 9. About page
+- [ ] About page: explain the name "Globetros", who was on the trip, and who made the homepage
+- [ ] Decide how it is reached (a discreet link or icon, so the journey stays the focus)
+
+## 10. Easter-egg section (nice to have)
+Guiding principle: the main experience stays focused on the journey. All bonus features live behind one easter-egg icon or section and are never in the way of reading the entries.
+- [ ] Design the easter-egg entry point (an icon or hidden spot) and the menu it opens
 - [ ] Guest book: show the old entries
 - [ ] Guest book: allow new entries (needs a backend or service, and moderation/spam protection)
 - [ ] Historical weather data for each entry's place and date, if a source is available
 - [ ] Narrator voice: read the entries aloud (text-to-speech or a recorded/generated voice), with play/pause in the journal panel
 - [ ] Spelling-corrected version: show the raw original by default, with a toggle to a cleaned-up spelling/language version (keep the original text as the source of truth, e.g. a `textCorrected` field per entry)
 
-## 10. Very last: playful retellings
+## 11. Very last: playful retellings
+(Also lives in the easter-egg section.)
 - [ ] Alternative versions of the entries in different voices, selectable in the journal panel: a wise old man, a Disneyfied version, and other ideas
