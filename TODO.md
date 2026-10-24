@@ -8,14 +8,14 @@ Ordered by priority. Items marked *(nice to have)* come last.
 - [x] Replace the Vite-template README with a real one (what it is, `npm run dev`, `npm run extract`)
 
 ## 2. Hosting
-- [ ] Pick a host (Netlify / Vercel / Cloudflare Pages / GitHub Pages)
-- [ ] Set up deploy from the git repo
+- [x] Pick a host: Cloudflare Pages
+- [x] Set up deploy from the git repo (live at https://globetros.pages.dev, deploys on push to main)
 - [ ] Point globetros.dk at it (DNS + HTTPS)
 
 ## 3. Update anything out of date
 - [x] Run `npm outdated` and update dependencies (done; held back eslint 10 and pdf-parse 2, both major bumps with no pressing need)
 - [x] Run `npm run lint` and `npm run build`, fix any warnings (lint is clean; build warns the JS bundle is 571 kB, worth code-splitting later)
-- [ ] Stamen Watercolor tiles come from Stadia Maps; check their free-tier terms and whether production at globetros.dk needs an API key or domain registration (see Map below)
+- [ ] Stamen Watercolor tiles come from Stadia Maps (tiles load fine on globetros.pages.dev; requests without a referer get 401, so re-check on globetros.dk once connected); check their free-tier terms and whether production at globetros.dk needs an API key or domain registration (see Map below)
 - [x] Remove unused template leftovers (`src/assets/*`, `public/icons.svg`)
 
 ## 4. Content and data
