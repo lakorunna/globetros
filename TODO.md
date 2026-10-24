@@ -5,7 +5,7 @@ Ordered by priority. Items marked *(nice to have)* come last.
 ## 1. Housekeeping
 - [x] `git init`, add a sensible `.gitignore` (node_modules, dist), make the first commit (done, branch `main`)
 - [x] Push to a remote repo (GitHub) so there is a backup (github.com/lakorunna/globetros, public)
-- [ ] Replace the Vite-template README with a real one (what it is, `npm run dev`, `npm run extract`)
+- [x] Replace the Vite-template README with a real one (what it is, `npm run dev`, `npm run extract`)
 
 ## 2. Hosting
 - [ ] Pick a host (Netlify / Vercel / Cloudflare Pages / GitHub Pages)
@@ -56,7 +56,4 @@ Guiding principle: the main experience stays focused on the journey. All bonus f
 - [ ] Historical weather data for each entry's place and date, if a source is available
 - [ ] Narrator voice: read the entries aloud (text-to-speech or a recorded/generated voice), with play/pause in the journal panel
 - [ ] Spelling-corrected version: show the raw original by default, with a toggle to a cleaned-up spelling/language version (keep the original text as the source of truth, e.g. a `textCorrected` field per entry)
-
-## 11. Very last: playful retellings
-(Also lives in the easter-egg section.)
-- [ ] Alternative versions of the entries in different voices, selectable in the journal panel: a wise old man, a Disneyfied version, and other ideas
+- [ ] Very last: alternative versions of the entries in different voices, selectable in the journal panel: a wise old man, a Disneyfied version, and other ideas

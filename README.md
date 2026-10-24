@@ -1,16 +1,55 @@
-# React + Vite
+# Globetros
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+An interactive travel journal built from the 32 travel log entries ("travellogs") written during a backpacking trip through Costa Rica, Peru, Bolivia, Chile and Argentina in 2007. A full-screen map shows the route; click a pin to read that entry in a panel beside the map.
 
-Currently, two official plugins are available:
+The journal text is in Danish and is kept as originally written.
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
+Planned home: globetros.dk
 
-## React Compiler
+## Running it locally
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+Requires Node.js and npm.
 
-## Expanding the ESLint configuration
+```bash
+npm install
+npm run dev        # dev server with hot reload
+npm run build      # production build into dist/
+npm run preview    # serve the production build locally
+npm run lint       # ESLint
+```
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+## Tech
+
+- React 19 and Vite
+- Leaflet via react-leaflet for the map
+- Stamen Watercolor tiles, served by Stadia Maps
+
+## Project layout
+
+```
+src/
+  App.jsx                    layout and selected-entry state
+  components/
+    AdventureMap.jsx         map, pins, route line, country highlights
+    JournalPanel.jsx         sliding panel that shows an entry
+  data/
+    entries.json             the 32 entries (text, location, coordinates, photos)
+    visited-countries.json   country outlines highlighted on the map
+scripts/
+  extract-entries.js         one-time extraction of entries from the PDFs
+original_content/            source material: the PDF travel logs, budget files, packing list
+```
+
+## Regenerating the entries
+
+`entries.json` was generated from the PDFs in `original_content/Travellog/`:
+
+```bash
+npm run extract
+```
+
+Note that this overwrites `src/data/entries.json`, so any hand edits there (coordinates, the `photos` arrays) would be lost. Check the diff before committing.
+
+## Roadmap
+
+See [TODO.md](TODO.md).
