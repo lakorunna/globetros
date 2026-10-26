@@ -3,7 +3,7 @@
 Only open items. Ordered by priority; the easter-egg section comes last.
 
 ## 1. Content and data
-- [ ] Add photos: populate the `photos` array in `src/data/entries.json` and show them in the journal panel (gallery)
+- [ ] Find the 95 photos that appear in the travel logs but were not in the Photos folder (list and thumbnails in `original_content/_missing_photos/`), then add them to the entries
 - [ ] Check why `Travellog` has 35 files but only 32 entries; extract any missing ones
 - [ ] Verify the coordinates, dates and titles of all 32 entries
 - [ ] Decide whether to use `original_content/Regnskab` (budget) and `Globetros pakkeliste.doc` (packing list) as extra sections

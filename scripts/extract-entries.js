@@ -1,4 +1,4 @@
-import { readFileSync, writeFileSync, readdirSync } from 'fs';
+import { readFileSync, writeFileSync, readdirSync, existsSync } from 'fs';
 import { join, dirname } from 'path';
 import { fileURLToPath } from 'url';
 import { createRequire } from 'module';
@@ -115,6 +115,11 @@ function parseEntry(rawText) {
 }
 
 async function extractEntries() {
+  // Photos were added by hand after the first extraction; keep them when re-extracting
+  const existingPhotos = existsSync(OUTPUT)
+    ? Object.fromEntries(JSON.parse(readFileSync(OUTPUT, 'utf8')).map(e => [e.id, e.photos]))
+    : {};
+
   const files = readdirSync(PDF_DIR).filter(f => f.endsWith('.pdf'));
 
   // Sort numerically: extract leading number from filename
@@ -155,7 +160,7 @@ async function extractEntries() {
       coordinates: { lat: meta.lat, lng: meta.lng },
       text,
       filename,
-      photos: [],
+      photos: existingPhotos[num] ?? [],
     });
   }
 

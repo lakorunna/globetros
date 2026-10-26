@@ -1,4 +1,5 @@
 import { useEffect, useRef } from 'react';
+import PhotoGallery from './PhotoGallery';
 import './JournalPanel.css';
 
 export default function JournalPanel({ entry, prevEntry, nextEntry, onClose, onNavigate }) {
@@ -47,20 +48,10 @@ export default function JournalPanel({ entry, prevEntry, nextEntry, onClose, onN
 
       <div className="journal-panel__body" ref={bodyRef}>
         <p className="journal-panel__text">{entry.text}</p>
+        {entry.photos && entry.photos.length > 0 && (
+          <PhotoGallery key={entry.id} photos={entry.photos} title={entry.title} />
+        )}
       </div>
-
-      {entry.photos && entry.photos.length > 0 && (
-        <div className="journal-panel__gallery">
-          {entry.photos.map((src, i) => (
-            <img
-              key={i}
-              src={src}
-              alt={`${entry.title} — billede ${i + 1}`}
-              className="journal-panel__photo"
-            />
-          ))}
-        </div>
-      )}
 
       <nav className="journal-panel__nav">
         <button

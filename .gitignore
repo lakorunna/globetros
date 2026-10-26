@@ -22,3 +22,7 @@ dist-ssr
 *.njsproj
 *.sln
 *.sw?
+
+# Raw source photos (large, only the web-sized copies in public/photos are committed)
+original_content/Photos/
+original_content/_missing_photos/

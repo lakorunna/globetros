@@ -32,12 +32,15 @@ src/
   components/
     AdventureMap.jsx         map, pins, route line, country highlights
     JournalPanel.jsx         sliding panel that shows an entry
+    PhotoGallery.jsx         photo grid with captions and a lightbox
   data/
     entries.json             the 32 entries (text, location, coordinates, photos)
     visited-countries.json   country outlines highlighted on the map
+public/photos/               web-sized photos per entry (1200 px) and thumbnails, matched to the PDFs
 scripts/
   extract-entries.js         one-time extraction of entries from the PDFs
 original_content/            source material: the PDF travel logs, budget files, packing list
+                             (original_content/Photos holds the full-size photos and is git-ignored)
 ```
 
 ## Regenerating the entries
@@ -48,7 +51,7 @@ original_content/            source material: the PDF travel logs, budget files,
 npm run extract
 ```
 
-Note that this overwrites `src/data/entries.json`, so any hand edits there (coordinates, the `photos` arrays) would be lost. Check the diff before committing.
+Note that this overwrites `src/data/entries.json`. Existing `photos` arrays are kept, but any other hand edits (such as coordinates) would be lost, so check the diff before committing.
 
 ## Roadmap
 
