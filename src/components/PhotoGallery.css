@@ -59,8 +59,8 @@
   object-fit: cover;
 }
 
-/* Field journal: a strip of tape holds each print */
-:root[data-theme='journal'] .photo-gallery__thumb::before {
+/* A strip of tape holds each print */
+.photo-gallery__thumb::before {
   content: '';
   position: absolute;
   top: -9px;

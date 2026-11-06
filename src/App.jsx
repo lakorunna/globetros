@@ -1,7 +1,6 @@
 import { useState } from 'react';
 import AdventureMap from './components/AdventureMap';
 import JournalPanel from './components/JournalPanel';
-import ThemeToggle from './components/ThemeToggle';
 import entries from './data/entries.json';
 import { sheetHeights, useSheetMode, useViewportHeight } from './sheet';
 import './App.css';
@@ -45,7 +44,6 @@ export default function App() {
           bottomInset={bottomInset}
         />
       </div>
-      <ThemeToggle />
       <div className="panel-wrapper">
         <JournalPanel
           entry={selectedEntry}

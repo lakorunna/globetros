@@ -83,7 +83,7 @@ function buildRoute(entries) {
   return { line: lineString(coords), entryDist, legs, total };
 }
 
-// Route and country colours come from the active theme's CSS variables
+// Route and country colours come from the CSS variables in themes.css
 function applyThemeColors(map) {
   const css = getComputedStyle(document.documentElement);
   const read = name => css.getPropertyValue(name).trim();
@@ -158,7 +158,6 @@ export default function AdventureMap({ entries, selectedEntry, onSelect, sheetMo
       credit?.removeAttribute('open');
     });
 
-    let themeObserver = null;
     const resizeObserver = new ResizeObserver(() => map.resize());
     resizeObserver.observe(containerRef.current);
 
@@ -205,11 +204,6 @@ export default function AdventureMap({ entries, selectedEntry, onSelect, sheetMo
       });
 
       applyThemeColors(map);
-      themeObserver = new MutationObserver(() => applyThemeColors(map));
-      themeObserver.observe(document.documentElement, {
-        attributes: true,
-        attributeFilter: ['data-theme'],
-      });
 
       pinsRef.current = entries.map(entry => {
         const el = createPin(entry, () => onSelectRef.current(entry));
@@ -256,7 +250,6 @@ export default function AdventureMap({ entries, selectedEntry, onSelect, sheetMo
     return () => {
       cancelAnimationFrame(rafRef.current);
       resizeObserver.disconnect();
-      themeObserver?.disconnect();
       map.remove();
       mapRef.current = null;
       progressRef.current = null;

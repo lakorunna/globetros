@@ -53,11 +53,3 @@ body,
 .maplibregl-ctrl-group button:hover {
   background: var(--ctrl-hover-bg) !important;
 }
-
-.maplibregl-ctrl-icon {
-  filter: var(--ctrl-icon-filter, none);
-}
-
-:root[data-theme='serial'] {
-  --ctrl-icon-filter: invert(1) sepia(0.6) saturate(2) hue-rotate(5deg);
-}

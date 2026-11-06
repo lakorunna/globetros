@@ -9,8 +9,8 @@ Only open items. Ordered by priority; the easter-egg section comes last.
 - [ ] Decide whether to use `original_content/Regnskab` (budget) and `Globetros pakkeliste.doc` (packing list) as extra sections
 
 ## 2. Look and feel
-- [ ] Pick a visual theme (Dagbog = refined field journal, Eventyr = 1930s adventure serial; switch with the temporary buttons under the map controls), then remove the switcher and the unused theme. Fine-tune the winner: the vehicle emoji, the lightbox, spacing, and maybe mix the best of both
-- [ ] The same style choice feeds the title screen, logo and About page
+- [ ] Fine-tune the field-journal look: the vehicle emoji, the lightbox, spacing, and anything that feels off on a real phone
+- [ ] Carry the same style into the title screen, logo and About page
 
 ## 3. Mobile layout
 - [ ] Test on a real phone (touch targets, safe areas, the iOS address bar); so far only checked in the browser's phone-size emulation
