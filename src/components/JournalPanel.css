@@ -22,7 +22,7 @@
   flex-shrink: 0;
 }
 
-/* Country, location, entry number and date share one small line */
+/* Dateline: "Place, Country · Date" */
 .journal-panel__meta {
   display: flex;
   flex-wrap: wrap;
@@ -38,24 +38,18 @@
 .journal-panel__meta > * + *::before {
   content: '·';
   margin-right: 10px;
-  color: var(--head-muted);
   opacity: 0.7;
 }
 
-.journal-panel__country {
+.journal-panel__place {
   font-weight: 700;
-  letter-spacing: 0.14em;
+  letter-spacing: 0.12em;
   text-transform: uppercase;
   color: var(--head-accent);
 }
 
-.journal-panel__location,
 .journal-panel__date {
   font-style: italic;
-}
-
-.journal-panel__entry-num {
-  letter-spacing: 0.06em;
 }
 
 .journal-panel__title {
@@ -66,6 +60,12 @@
   letter-spacing: var(--title-tracking);
   line-height: var(--title-leading);
   color: var(--head-text);
+}
+
+.journal-panel__num {
+  color: var(--head-accent);
+  font-weight: 500;
+  margin-right: 0.15em;
 }
 
 .journal-panel__intro {
@@ -137,11 +137,7 @@
   word-break: break-word;
 }
 
-/* The map/read button and handle only exist in the mobile bottom sheet */
-.journal-panel__nav-map {
-  display: none;
-}
-
+/* The drag handle only exists in the mobile bottom sheet */
 .journal-panel__handle {
   width: 40px;
   height: 4px;
@@ -255,12 +251,4 @@
     font-size: 13px;
   }
 
-  .journal-panel__nav-map {
-    display: block;
-    flex: 1;
-  }
-
-  .journal-panel__nav-pos {
-    display: none;
-  }
 }

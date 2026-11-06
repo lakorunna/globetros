@@ -138,12 +138,14 @@ export default function JournalPanel({
           ×
         </button>
         <div className="journal-panel__meta">
-          <span className="journal-panel__country">{entry.country}</span>
-          <span className="journal-panel__location">{entry.location}</span>
-          <span className="journal-panel__entry-num">#{entry.id}</span>
-          {entry.date && <span className="journal-panel__date">{entry.date}</span>}
+          <span className="journal-panel__place">{entry.location}, {entry.country}</span>
+          {entry.date && (
+            <span className="journal-panel__date">{entry.date.replace(/^0/, '')}</span>
+          )}
         </div>
-        <h2 className="journal-panel__title">{entry.title}</h2>
+        <h2 className="journal-panel__title">
+          <span className="journal-panel__num">#{entry.id}</span> {entry.title}
+        </h2>
       </header>
 
       <div className="journal-panel__body" ref={bodyRef}>
@@ -163,12 +165,6 @@ export default function JournalPanel({
           title={prevEntry ? `#${prevEntry.id} ${prevEntry.title}` : undefined}
         >
           ← {prevEntry ? `#${prevEntry.id}` : ''}
-        </button>
-        <button
-          className="journal-panel__nav-btn journal-panel__nav-map"
-          onClick={() => onSnapChange(snap === 'peek' ? 'half' : 'peek')}
-        >
-          {snap === 'peek' ? 'Læs' : 'Kort'}
         </button>
         <span className="journal-panel__nav-pos">
           {entry.id} / 32
