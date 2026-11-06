@@ -2,6 +2,13 @@ import { useEffect, useRef } from 'react';
 import PhotoGallery from './PhotoGallery';
 import './JournalPanel.css';
 
+// The PDFs hard-wrapped every line at about 80 characters, which looks ragged in a narrower
+// panel. Join those wrapped lines back together, but keep breaks after short lines
+// (headings such as dates, intentional line breaks) and blank lines between paragraphs.
+function reflow(text) {
+  return text.replace(/([^\n]{50,})\n(?!\n)/g, '$1 ');
+}
+
 export default function JournalPanel({ entry, prevEntry, nextEntry, onClose, onNavigate }) {
   const bodyRef = useRef(null);
 
@@ -47,7 +54,7 @@ export default function JournalPanel({ entry, prevEntry, nextEntry, onClose, onN
       </header>
 
       <div className="journal-panel__body" ref={bodyRef}>
-        <p className="journal-panel__text">{entry.text}</p>
+        <p className="journal-panel__text">{reflow(entry.text)}</p>
         {entry.photos && entry.photos.length > 0 && (
           <PhotoGallery key={entry.id} photos={entry.photos} title={entry.title} />
         )}
@@ -61,6 +68,9 @@ export default function JournalPanel({ entry, prevEntry, nextEntry, onClose, onN
           title={prevEntry ? `#${prevEntry.id} ${prevEntry.title}` : undefined}
         >
           ← {prevEntry ? `#${prevEntry.id}` : ''}
+        </button>
+        <button className="journal-panel__nav-btn journal-panel__nav-map" onClick={onClose}>
+          Kort
         </button>
         <span className="journal-panel__nav-pos">
           {entry.id} / 32

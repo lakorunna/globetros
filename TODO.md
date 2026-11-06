@@ -9,9 +9,8 @@ Only open items. Ordered by priority; the easter-egg section comes last.
 - [ ] Decide whether to use `original_content/Regnskab` (budget) and `Globetros pakkeliste.doc` (packing list) as extra sections
 
 ## 2. Mobile layout
-- [ ] Replace the 50/50 split with a full-screen or bottom-sheet journal view on small screens
-- [ ] Simpler navigation: fixed buttons at the bottom (previous / next / map or list)
-- [ ] Test on real phone sizes, including touch targets and safe areas
+- [ ] Test on a real phone (touch targets, safe areas, the iOS address bar); so far only checked in the browser's phone-size emulation
+- [ ] Optional polish: swipe left/right in the photo lightbox, and keep the pin highlighted when returning to the map with the Kort button
 
 ## 3. Map
 - [ ] Check the map on mobile and with the globe/flat toggle
