@@ -7,10 +7,10 @@
 .map-canvas {
   height: 100%;
   width: 100%;
-  background: var(--parchment-dark);
+  background: #e8d5a3;
 }
 
-/* Vintage pin marker */
+/* Map pin: a teardrop with the entry number */
 .vintage-pin {
   width: 32px;
   height: 44px;
@@ -19,11 +19,11 @@
 .pin-body {
   width: 32px;
   height: 32px;
-  background: #fff;
-  border: 2.5px solid var(--ink);
+  background: var(--pin-bg);
+  border: 2.5px solid var(--pin-border);
   border-radius: 50% 50% 50% 0;
   transform: rotate(-45deg);
-  box-shadow: 2px 2px 6px rgba(0, 0, 0, 0.55);
+  box-shadow: 2px 2px 6px rgba(0, 0, 0, 0.5);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -35,49 +35,47 @@
 }
 
 .pin-body:hover {
-  background: var(--parchment-dark);
   transform: rotate(-45deg) scale(1.15);
 }
 
 .pin-num {
   transform: rotate(45deg);
-  font-family: var(--font-heading);
+  font-family: var(--font-ui);
   font-size: 11px;
-  font-weight: 600;
-  color: var(--ink);
+  font-weight: 700;
+  color: var(--pin-text);
   line-height: 1;
   pointer-events: none;
 }
 
-/* Selected pin state */
 .vintage-pin.selected .pin-body {
-  background: var(--rust);
-  border-color: var(--ink);
+  background: var(--pin-selected-bg);
   transform: rotate(-45deg) scale(1.3);
   box-shadow: 3px 3px 8px rgba(0, 0, 0, 0.6);
 }
 
 .vintage-pin.selected .pin-num {
-  color: #fff;
+  color: var(--pin-selected-text);
 }
 
-/* Country name overlay — top-center of map when a panel is open */
+/* Country name overlay — top-center of map when a story is open */
 .country-overlay {
   position: absolute;
   top: 16px;
   left: 50%;
   transform: translateX(-50%);
-  z-index: 2; /* above the map canvas */
-  font-family: var(--font-heading);
-  font-size: 15px;
-  font-weight: 600;
-  letter-spacing: 0.18em;
+  z-index: 2;
+  font-family: var(--font-ui);
+  font-size: 13px;
+  font-weight: 700;
+  letter-spacing: 0.22em;
   text-transform: uppercase;
-  color: var(--ink);
-  background: rgba(244, 233, 208, 0.90);
+  color: var(--ctrl-text);
+  background: var(--ctrl-bg);
   padding: 6px 22px;
-  border: 1px solid var(--parchment-shadow);
-  box-shadow: 0 1px 5px rgba(0, 0, 0, 0.18);
+  border: 1px solid var(--ctrl-border);
+  border-radius: var(--radius);
+  box-shadow: 0 1px 5px rgba(0, 0, 0, 0.25);
   pointer-events: none;
   white-space: nowrap;
 }
@@ -93,14 +91,14 @@
 
 /* Pin tooltip on hover */
 .pin-tooltip .maplibregl-popup-content {
-  background: var(--parchment);
-  border: 1px solid var(--parchment-shadow);
-  border-radius: 3px;
-  font-family: var(--font-heading);
-  font-size: 11px;
-  color: var(--ink);
-  padding: 3px 8px;
-  box-shadow: 1px 1px 4px rgba(0, 0, 0, 0.25);
+  background: var(--ctrl-bg);
+  border: 1px solid var(--ctrl-border);
+  border-radius: var(--radius);
+  font-family: var(--font-ui);
+  font-size: 12px;
+  color: var(--ctrl-text);
+  padding: 3px 9px;
+  box-shadow: 1px 1px 4px rgba(0, 0, 0, 0.3);
   white-space: nowrap;
   pointer-events: none;
 }

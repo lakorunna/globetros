@@ -1,13 +1,4 @@
 :root {
-  --parchment: #f4e9d0;
-  --parchment-dark: #e8d5a3;
-  --parchment-shadow: #d4bc84;
-  --ink: #2c1a0e;
-  --ink-faded: #6b4f3a;
-  --rust: #8b3a1a;
-  --rust-light: #b8572a;
-  --font-heading: 'Cinzel', Georgia, serif;
-  --font-body: 'IM Fell English', Georgia, serif;
   --transition-speed: 0.4s;
 }
 
@@ -25,9 +16,9 @@ body,
   height: 100%;
   width: 100%;
   overflow: hidden;
-  background: var(--parchment);
-  color: var(--ink);
-  font-family: var(--font-body);
+  background: var(--panel-bg);
+  color: var(--panel-text);
+  font-family: var(--font-text);
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   text-rendering: optimizeLegibility;
@@ -35,21 +26,38 @@ body,
 
 /* MapLibre attribution */
 .maplibregl-ctrl-attrib {
-  background: rgba(244, 233, 208, 0.88) !important;
-  font-family: var(--font-body);
-  color: var(--ink-faded) !important;
+  background: var(--ctrl-bg) !important;
+  font-family: var(--font-ui);
+  color: var(--ctrl-text) !important;
 }
 
 .maplibregl-ctrl-attrib a {
-  color: var(--rust) !important;
+  color: var(--head-accent) !important;
 }
 
-/* MapLibre controls */
+.maplibregl-ctrl-attrib-button {
+  filter: none;
+}
+
+/* MapLibre zoom / compass controls */
 .maplibregl-ctrl-group {
-  background: var(--parchment) !important;
-  border: 1px solid var(--parchment-shadow);
+  background: var(--ctrl-bg) !important;
+  border: 1px solid var(--ctrl-border);
+  border-radius: var(--radius) !important;
+}
+
+.maplibregl-ctrl-group button + button {
+  border-top-color: var(--ctrl-border) !important;
 }
 
 .maplibregl-ctrl-group button:hover {
-  background: var(--parchment-dark) !important;
+  background: var(--ctrl-hover-bg) !important;
+}
+
+.maplibregl-ctrl-icon {
+  filter: var(--ctrl-icon-filter, none);
+}
+
+:root[data-theme='serial'] {
+  --ctrl-icon-filter: invert(1) sepia(0.6) saturate(2) hue-rotate(5deg);
 }

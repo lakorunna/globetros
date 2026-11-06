@@ -1,0 +1,129 @@
+/* Visual themes. Every colour, typeface and shape the UI uses comes from these tokens,
+   so a theme is just a block of values. The theme is picked with <html data-theme="...">. */
+
+:root,
+:root[data-theme='journal'] {
+  /* Field journal: warm paper, one deep accent, calm serif reading */
+  --font-display: 'Cormorant Garamond', Georgia, serif;
+  --font-ui: 'Lora', Georgia, serif;
+  --font-text: 'Lora', Georgia, serif;
+
+  --panel-bg: #fbf7ef;
+  --panel-text: #2b2620;
+  --panel-muted: #7a705f;
+  --panel-line: #e1d7c0;
+  --accent: #7a2e1d;
+  --accent-contrast: #fffaf0;
+
+  --head-bg: #f3ecdc;
+  --head-text: #241f19;
+  --head-muted: #7a705f;
+  --head-accent: #7a2e1d;
+  --head-line: #e1d7c0;
+  --head-rule: 1px solid var(--head-line);
+
+  --nav-bg: #f3ecdc;
+  --btn-bg: transparent;
+  --btn-text: #2b2620;
+  --btn-border: #cfc2a3;
+  --btn-hover-bg: #7a2e1d;
+  --btn-hover-text: #fffaf0;
+  --btn-transform: none;
+  --btn-tracking: 0.02em;
+  --btn-weight: 500;
+
+  --pin-bg: #fffaf0;
+  --pin-border: #2b2620;
+  --pin-text: #2b2620;
+  --pin-selected-bg: #7a2e1d;
+  --pin-selected-text: #fffaf0;
+
+  --ctrl-bg: rgba(251, 247, 239, 0.94);
+  --ctrl-text: #2b2620;
+  --ctrl-border: #d8ccb0;
+  --ctrl-hover-bg: #efe6d1;
+
+  --route: #7a2e1d;
+  --route-width: 2.5;
+  --route-width-past: 3;
+  --country-fill: rgba(122, 46, 29, 0.08);
+  --country-line: rgba(122, 46, 29, 0.4);
+
+  --photo-bg: #ffffff;
+  --photo-border: #e1d7c0;
+  --photo-shadow: 0 2px 8px rgba(40, 30, 15, 0.22);
+
+  --radius: 4px;
+  --sheet-radius: 18px;
+  --title-size: 29px;
+  --title-weight: 600;
+  --title-transform: none;
+  --title-tracking: 0;
+  --title-leading: 1.1;
+  --text-size: 17px;
+  --text-leading: 1.75;
+  --text-color: #2b2620;
+}
+
+:root[data-theme='serial'] {
+  /* 1930s adventure serial: navy, gold and red, bold display type, hard shadows */
+  --font-display: 'Abril Fatface', Georgia, serif;
+  --font-ui: 'Josefin Sans', system-ui, sans-serif;
+  --font-text: 'Crimson Pro', Georgia, serif;
+
+  --panel-bg: #f3e7c9;
+  --panel-text: #1d2433;
+  --panel-muted: #6a5f48;
+  --panel-line: #d9c796;
+  --accent: #b3261e;
+  --accent-contrast: #fff6dc;
+
+  --head-bg: #14243a;
+  --head-text: #f6e7b8;
+  --head-muted: #b9a977;
+  --head-accent: #e2b04a;
+  --head-line: #e2b04a;
+  --head-rule: 4px double var(--head-line);
+
+  --nav-bg: #14243a;
+  --btn-bg: transparent;
+  --btn-text: #f6e7b8;
+  --btn-border: #e2b04a;
+  --btn-hover-bg: #e2b04a;
+  --btn-hover-text: #14243a;
+  --btn-transform: uppercase;
+  --btn-tracking: 0.12em;
+  --btn-weight: 700;
+
+  --pin-bg: #14243a;
+  --pin-border: #e2b04a;
+  --pin-text: #f6e7b8;
+  --pin-selected-bg: #c1272d;
+  --pin-selected-text: #fff6dc;
+
+  --ctrl-bg: rgba(20, 36, 58, 0.95);
+  --ctrl-text: #f6e7b8;
+  --ctrl-border: #e2b04a;
+  --ctrl-hover-bg: #223a5a;
+
+  --route: #c1272d;
+  --route-width: 4;
+  --route-width-past: 5;
+  --country-fill: rgba(193, 39, 45, 0.1);
+  --country-line: rgba(193, 39, 45, 0.6);
+
+  --photo-bg: #fff6dc;
+  --photo-border: #14243a;
+  --photo-shadow: 3px 3px 0 rgba(20, 36, 58, 0.85);
+
+  --radius: 0px;
+  --sheet-radius: 0px;
+  --title-size: 25px;
+  --title-weight: 400;
+  --title-transform: uppercase;
+  --title-tracking: 0.03em;
+  --title-leading: 1.12;
+  --text-size: 19px;
+  --text-leading: 1.6;
+  --text-color: #1d2433;
+}

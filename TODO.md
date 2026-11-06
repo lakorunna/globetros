@@ -8,31 +8,35 @@ Only open items. Ordered by priority; the easter-egg section comes last.
 - [ ] Verify the coordinates, dates and titles of all 32 entries
 - [ ] Decide whether to use `original_content/Regnskab` (budget) and `Globetros pakkeliste.doc` (packing list) as extra sections
 
-## 2. Mobile layout
+## 2. Look and feel
+- [ ] Pick a visual theme (Dagbog = refined field journal, Eventyr = 1930s adventure serial; switch with the temporary buttons under the map controls), then remove the switcher and the unused theme. Fine-tune the winner: the vehicle emoji, the lightbox, spacing, and maybe mix the best of both
+- [ ] The same style choice feeds the title screen, logo and About page
+
+## 3. Mobile layout
 - [ ] Test on a real phone (touch targets, safe areas, the iOS address bar); so far only checked in the browser's phone-size emulation
 - [ ] Optional polish: swipe left/right in the photo lightbox, and keep the pin highlighted when returning to the map with the Kort button
 
-## 3. Map
+## 4. Map
 - [ ] Check the map on mobile and with the globe/flat toggle
 - [ ] Reduce the JS bundle (about 1.5 MB, mostly MapLibre): check Turf imports, code-split the map
 
-## 4. Travel path
+## 5. Travel path
 - [ ] Add waypoints so overland legs follow roads and coastlines instead of straight lines
 
-## 5. Title screen / logo
+## 6. Title screen / logo
 - [ ] Design a title screen or logo
 - [ ] Inspiration: Indiana Jones (map with a travelling red line), TaleSpin, The Jungle Book
 - [ ] Decide on the intro flow (title screen, then the map)
 - [ ] Refine the opening fly-in from Denmark to the first entry (currently a simple 7 s fly-to; ideas: a start marker in Denmark, the route drawing itself, a plane, skip button)
 
-## 6. About page
+## 7. About page
 - [ ] About page: explain the name "Globetros", who was on the trip, and who made the homepage
 - [ ] Decide how it is reached (a discreet link or icon, so the journey stays the focus)
 
-## 7. Research (no implementation yet)
+## 8. Research (no implementation yet)
 - [ ] Book view: is there an external library that shows a book that opens and can be flipped through, so the entries could live in one? Research only. First lead: react-pageflip (a React wrapper around StPageFlip); check its maintenance, mobile behavior and how it handles long Danish text before deciding anything
 
-## 8. Easter-egg section (nice to have)
+## 9. Easter-egg section (nice to have)
 Guiding principle: the main experience stays focused on the journey. All bonus features live behind one easter-egg icon or section and are never in the way of reading the entries.
 - [ ] Design the easter-egg entry point (an icon or hidden spot) and the menu it opens
 - [ ] Guest book: show the old entries

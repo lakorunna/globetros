@@ -83,6 +83,20 @@ function buildRoute(entries) {
   return { line: lineString(coords), entryDist, legs, total };
 }
 
+// Route and country colours come from the active theme's CSS variables
+function applyThemeColors(map) {
+  const css = getComputedStyle(document.documentElement);
+  const read = name => css.getPropertyValue(name).trim();
+  map.setPaintProperty('countries-fill', 'fill-color', read('--country-fill'));
+  map.setPaintProperty('countries-fill', 'fill-opacity', 1);
+  map.setPaintProperty('countries-line', 'line-color', read('--country-line'));
+  map.setPaintProperty('countries-line', 'line-opacity', 1);
+  map.setPaintProperty('route-future', 'line-color', read('--route'));
+  map.setPaintProperty('route-future', 'line-width', parseFloat(read('--route-width')));
+  map.setPaintProperty('route-past', 'line-color', read('--route'));
+  map.setPaintProperty('route-past', 'line-width', parseFloat(read('--route-width-past')));
+}
+
 function slice(line, from, to) {
   if (to - from < 0.001) return EMPTY;
   return lineSliceAlong(line, from, to);
@@ -144,6 +158,7 @@ export default function AdventureMap({ entries, selectedEntry, onSelect, sheetMo
       credit?.removeAttribute('open');
     });
 
+    let themeObserver = null;
     const resizeObserver = new ResizeObserver(() => map.resize());
     resizeObserver.observe(containerRef.current);
 
@@ -187,6 +202,13 @@ export default function AdventureMap({ entries, selectedEntry, onSelect, sheetMo
         source: 'route-past',
         layout: { 'line-cap': 'round', 'line-join': 'round' },
         paint: { 'line-color': '#8b3a1a', 'line-opacity': 0.85, 'line-width': 3 },
+      });
+
+      applyThemeColors(map);
+      themeObserver = new MutationObserver(() => applyThemeColors(map));
+      themeObserver.observe(document.documentElement, {
+        attributes: true,
+        attributeFilter: ['data-theme'],
       });
 
       pinsRef.current = entries.map(entry => {
@@ -234,6 +256,7 @@ export default function AdventureMap({ entries, selectedEntry, onSelect, sheetMo
     return () => {
       cancelAnimationFrame(rafRef.current);
       resizeObserver.disconnect();
+      themeObserver?.disconnect();
       map.remove();
       mapRef.current = null;
       progressRef.current = null;
