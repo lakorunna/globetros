@@ -26,6 +26,10 @@ const FLIGHT_KM = 1200;
 
 const EMPTY = { type: 'FeatureCollection', features: [] };
 
+// On small screens the journal is a bottom sheet over the lower 70% of the map (see App.css)
+const SHEET_QUERY = '(max-width: 820px), (max-height: 500px)';
+const SHEET_FRACTION = 0.7;
+
 const STYLE = {
   version: 8,
   projection: { type: 'globe' },
@@ -271,19 +275,45 @@ export default function AdventureMap({ entries, selectedEntry, onSelect }) {
       rafRef.current = requestAnimationFrame(step);
     }
 
-    // Only re-zoom when the country changes — same-country switches leave the camera alone
     const country = selectedEntry?.country ?? null;
+    const inCountry = country ? entries.filter(e => e.country === country) : [];
+    const lngs = inCountry.map(e => e.coordinates.lng);
+    const lats = inCountry.map(e => e.coordinates.lat);
+    const countryBounds = country
+      ? [[Math.min(...lngs), Math.min(...lats)], [Math.max(...lngs), Math.max(...lats)]]
+      : null;
+
+    // Bottom sheet: keep the visible strip of map above the sheet centred on the story,
+    // so the route and vehicle stay in view while browsing
+    if (window.matchMedia(SHEET_QUERY).matches) {
+      const sheet = Math.round(map.getContainer().clientHeight * SHEET_FRACTION);
+      if (!selectedEntry) {
+        prevCountryRef.current = null;
+        map.easeTo({ padding: { top: 0, bottom: 0, left: 0, right: 0 }, duration: 600 });
+        return;
+      }
+      const center = [selectedEntry.coordinates.lng, selectedEntry.coordinates.lat];
+      const padding = { top: 40, bottom: sheet, left: 0, right: 0 };
+      if (country !== prevCountryRef.current) {
+        // New country: zoom to a level that shows the country, but centre on this story
+        prevCountryRef.current = country;
+        const fit = map.cameraForBounds(countryBounds, {
+          padding: { top: 60, bottom: sheet + 30, left: 40, right: 40 },
+          maxZoom: 8,
+        });
+        map.easeTo({ center, zoom: Math.min(fit?.zoom ?? 5, 7), padding, duration: 1200 });
+      } else {
+        map.easeTo({ center, padding, duration: 900 });
+      }
+      return;
+    }
+
+    // Split screen: only re-zoom when the country changes — same-country switches leave the camera alone
     if (country && country !== prevCountryRef.current) {
       prevCountryRef.current = country;
-      const inCountry = entries.filter(e => e.country === country);
-      const lngs = inCountry.map(e => e.coordinates.lng);
-      const lats = inCountry.map(e => e.coordinates.lat);
       // Fit after the panel has finished opening so the map knows its new width
       const fitTimer = setTimeout(() => {
-        map.fitBounds(
-          [[Math.min(...lngs), Math.min(...lats)], [Math.max(...lngs), Math.max(...lats)]],
-          { padding: 60, maxZoom: 8, duration: 1200 },
-        );
+        map.fitBounds(countryBounds, { padding: 60, maxZoom: 8, duration: 1200 });
       }, 460);
       return () => clearTimeout(fitTimer);
     }
