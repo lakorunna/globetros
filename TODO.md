@@ -23,6 +23,7 @@ Only open items. Ordered by priority; the easter-egg section comes last.
 - [ ] Design a title screen or logo
 - [ ] Inspiration: Indiana Jones (map with a travelling red line), TaleSpin, The Jungle Book
 - [ ] Decide on the intro flow (title screen, then the map)
+- [ ] Refine the opening fly-in from Denmark to the first entry (currently a simple 7 s fly-to; ideas: a start marker in Denmark, the route drawing itself, a plane, skip button)
 
 ## 6. About page
 - [ ] About page: explain the name "Globetros", who was on the trip, and who made the homepage

@@ -18,8 +18,9 @@ import visitedCountries from '../data/visited-countries.json';
 // In a production bundle that file is gone, so point it at the worker Vite emits.
 if (import.meta.env.PROD) maplibregl.setWorkerUrl(workerUrl);
 
-// Bounds covering Costa Rica through Argentina ([lng, lat] pairs)
-const BOUNDS = [[-92.0, -56.0], [-32.0, 14.0]];
+// The trip starts in Denmark: open on a globe view over Denmark, then fly to the first entry
+const START_VIEW = { center: [10.0, 56.0], zoom: 3.2 };
+const FLY_IN = { zoom: 5.5, duration: 7000, curve: 1.6 };
 
 // Legs longer than this are drawn as great-circle arcs and travelled by plane
 const FLIGHT_KM = 1200;
@@ -122,15 +123,14 @@ export default function AdventureMap({ entries, selectedEntry, onSelect }) {
     const map = new maplibregl.Map({
       container: containerRef.current,
       style: STYLE,
-      bounds: BOUNDS,
-      fitBoundsOptions: { padding: 30 },
+      center: START_VIEW.center,
+      zoom: START_VIEW.zoom,
       minZoom: 0.5,
       maxZoom: 16,
       attributionControl: { compact: true },
     });
     mapRef.current = map;
     map.addControl(new maplibregl.NavigationControl({ visualizePitch: true }), 'top-left');
-    map.addControl(new maplibregl.GlobeControl(), 'top-left');
 
     const resizeObserver = new ResizeObserver(() => map.resize());
     resizeObserver.observe(containerRef.current);
@@ -205,6 +205,16 @@ export default function AdventureMap({ entries, selectedEntry, onSelect }) {
           .setLngLat([0, 0])
           .addTo(map),
       };
+
+      // Fly-in from Denmark to the first entry (skipped if the visitor prefers reduced motion).
+      // Any touch or drag on the map cancels it.
+      const first = entries[0].coordinates;
+      const target = { center: [first.lng, first.lat], zoom: FLY_IN.zoom };
+      if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+        map.jumpTo(target);
+      } else {
+        map.flyTo({ ...target, duration: FLY_IN.duration, curve: FLY_IN.curve, essential: true });
+      }
 
       setReady(true);
     });
@@ -289,7 +299,11 @@ export default function AdventureMap({ entries, selectedEntry, onSelect }) {
       const sheet = Math.round(map.getContainer().clientHeight * SHEET_FRACTION);
       if (!selectedEntry) {
         prevCountryRef.current = null;
-        map.easeTo({ padding: { top: 0, bottom: 0, left: 0, right: 0 }, duration: 600 });
+        // Only reset when the sheet had shifted the view; otherwise this would cancel the fly-in
+        const { top, bottom, left, right } = map.getPadding();
+        if (top || bottom || left || right) {
+          map.easeTo({ padding: { top: 0, bottom: 0, left: 0, right: 0 }, duration: 600 });
+        }
         return;
       }
       const center = [selectedEntry.coordinates.lng, selectedEntry.coordinates.lat];
