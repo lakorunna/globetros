@@ -13,6 +13,7 @@ import {
 } from '@turf/turf';
 import './AdventureMap.css';
 import visitedCountries from '../data/visited-countries.json';
+import { SHEET_QUERY } from '../sheet';
 
 // In dev MapLibre finds its worker next to its own module (see optimizeDeps in vite.config.js).
 // In a production bundle that file is gone, so point it at the worker Vite emits.
@@ -27,9 +28,6 @@ const FLIGHT_KM = 1200;
 
 const EMPTY = { type: 'FeatureCollection', features: [] };
 
-// On small screens the journal is a bottom sheet over the lower 70% of the map (see App.css)
-const SHEET_QUERY = '(max-width: 820px), (max-height: 500px)';
-const SHEET_FRACTION = 0.7;
 
 const STYLE = {
   version: 8,
@@ -100,7 +98,7 @@ function createPin(entry, onClick) {
 
 const easeInOut = t => (t < 0.5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 3) / 2);
 
-export default function AdventureMap({ entries, selectedEntry, onSelect }) {
+export default function AdventureMap({ entries, selectedEntry, onSelect, sheetMode, bottomInset }) {
   const containerRef = useRef(null);
   const mapRef = useRef(null);
   const pinsRef = useRef([]);
@@ -110,13 +108,16 @@ export default function AdventureMap({ entries, selectedEntry, onSelect }) {
   const prevCountryRef = useRef(null);
   const rafRef = useRef(0);
   const onSelectRef = useRef(onSelect);
+  // Latest sheet state for the camera code, without re-running it when the sheet moves
+  const sheetRef = useRef({ sheetMode, bottomInset });
   const [ready, setReady] = useState(false);
 
   const route = useMemo(() => buildRoute(entries), [entries]);
 
   useEffect(() => {
     onSelectRef.current = onSelect;
-  }, [onSelect]);
+    sheetRef.current = { sheetMode, bottomInset };
+  }, [onSelect, sheetMode, bottomInset]);
 
   // Create the map, layers, pins and vehicle once
   useEffect(() => {
@@ -127,10 +128,21 @@ export default function AdventureMap({ entries, selectedEntry, onSelect }) {
       zoom: START_VIEW.zoom,
       minZoom: 0.5,
       maxZoom: 16,
-      attributionControl: { compact: true },
+      attributionControl: false,
     });
     mapRef.current = map;
+    // On phones the bottom sheet covers the bottom edge, so the credit goes to the top
+    map.addControl(
+      new maplibregl.AttributionControl({ compact: true }),
+      window.matchMedia(SHEET_QUERY).matches ? 'top-right' : 'bottom-right',
+    );
     map.addControl(new maplibregl.NavigationControl({ visualizePitch: true }), 'top-left');
+    // Start with the credit collapsed to its (i) button so it doesn't cover the controls
+    map.once('load', () => {
+      const credit = map.getContainer().querySelector('.maplibregl-ctrl-attrib');
+      credit?.classList.remove('maplibregl-compact-show');
+      credit?.removeAttribute('open');
+    });
 
     const resizeObserver = new ResizeObserver(() => map.resize());
     resizeObserver.observe(containerRef.current);
@@ -295,8 +307,8 @@ export default function AdventureMap({ entries, selectedEntry, onSelect }) {
 
     // Bottom sheet: keep the visible strip of map above the sheet centred on the story,
     // so the route and vehicle stay in view while browsing
-    if (window.matchMedia(SHEET_QUERY).matches) {
-      const sheet = Math.round(map.getContainer().clientHeight * SHEET_FRACTION);
+    if (sheetRef.current.sheetMode) {
+      const sheet = sheetRef.current.bottomInset;
       if (!selectedEntry) {
         prevCountryRef.current = null;
         // Only reset when the sheet had shifted the view; otherwise this would cancel the fly-in
@@ -333,6 +345,19 @@ export default function AdventureMap({ entries, selectedEntry, onSelect }) {
     }
     if (!country) prevCountryRef.current = null;
   }, [selectedEntry, entries, route, ready]);
+
+  // When the sheet is dragged to a new height, re-frame the story in the strip of map left above it
+  useEffect(() => {
+    const map = mapRef.current;
+    if (!ready || !map || !sheetMode || !selectedEntry) return;
+    map.easeTo({
+      center: [selectedEntry.coordinates.lng, selectedEntry.coordinates.lat],
+      padding: { top: 40, bottom: bottomInset, left: 0, right: 0 },
+      duration: 350,
+    });
+    // Only when the inset changes, not when the selection does (that has its own camera move)
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [bottomInset]);
 
   return (
     <div className="adventure-map">
