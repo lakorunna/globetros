@@ -17,7 +17,8 @@ Only open items. Ordered by priority; the easter-egg section comes last.
 - [ ] Optional polish: swipe left/right in the photo lightbox, and keep the pin highlighted when returning to the map with the Kort button
 
 ## 4. Travel path
-- [ ] Correct individual legs where the real journey differed from the road route, such as the ferry from Puntarenas to Paquera on the way to Montezuma, trains and boats (Machu Picchu, Lake Titicaca)
+- [ ] Correct individual legs where the real journey differed from the road route, such as the ferry from Puntarenas to Paquera on the way to Montezuma, trains and boats (Machu Picchu, Lake Titicaca). The entries' text probably answers most of these, so read through them and fix the legs from what they say
+- [ ] Group pins that sit on top of each other (e.g. #2, #3 and #4 in Montezuma; #27 and #28 in Pucón; #1 and #12 in San José): one pin showing the number of stories that opens a list or fans out when tapped or zoomed
 
 ## 5. Title screen / logo
 - [ ] Design a title screen or logo
