@@ -28,7 +28,7 @@ const METADATA = {
   10: { title: 'Sol og strand og Zulu-mand',                country: 'Costa Rica', location: 'Manuel Antonio',             lat:   9.3929, lng: -84.1401 },
   11: { title: 'Mere badeferie - nu ogsaa med kabel-TV!',   country: 'Costa Rica', location: 'Jacó',                       lat:   9.6150, lng: -84.6261 },
   12: { title: 'Mens vi venter paa nye eventyr',            country: 'Costa Rica', location: 'San José',                   lat:   9.9381, lng: -84.1007 },
-  13: { title: 'Fotoshoot i Lima',                          country: 'Peru',       location: 'Lima',                       lat: -12.0464, lng: -77.0428 },
+  13: { title: 'Fotoshoot i Lima',                          country: 'Peru',       location: 'Lima',                       lat: -12.0464, lng: -77.0428, arrival: 'flight' },
   14: { title: 'Hostel San Isidro, Islas Ballestas & Paracas', country: 'Peru',   location: 'Paracas / Islas Ballestas',  lat: -13.8348, lng: -76.2506 },
   15: { title: 'Skeletter med kasketter og uSANDsynligt sjov ørkent ur', country: 'Peru', location: 'Huacachina',         lat: -14.0876, lng: -75.7645 },
   16: { title: 'Og quiz-vinderen er...',                    country: 'Peru',       location: 'Ica',                        lat: -14.0667, lng: -75.7333 },
@@ -165,6 +165,8 @@ async function extractEntries() {
       location: meta.location,
       date,
       coordinates: { lat: meta.lat, lng: meta.lng },
+      // How the travellers got here from the previous entry: omitted means overland (bus etc.)
+      ...(meta.arrival && { arrival: meta.arrival }),
     });
     writeFileSync(
       join(DETAIL_DIR, `${num}.json`),

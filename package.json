@@ -8,7 +8,8 @@
     "build": "vite build",
     "lint": "eslint .",
     "preview": "vite preview",
-    "extract": "node scripts/extract-entries.js"
+    "extract": "node scripts/extract-entries.js",
+    "route": "node scripts/build-route.js"
   },
   "dependencies": {
     "@turf/turf": "^7.4.0",

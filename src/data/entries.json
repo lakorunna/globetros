@@ -140,7 +140,8 @@
     "coordinates": {
       "lat": -12.0464,
       "lng": -77.0428
-    }
+    },
+    "arrival": "flight"
   },
   {
     "id": 14,

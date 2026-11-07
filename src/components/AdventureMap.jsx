@@ -5,7 +5,6 @@ import workerUrl from 'maplibre-gl/dist/maplibre-gl-worker.mjs?worker&url';
 import {
   along,
   bearing,
-  distance,
   greatCircle,
   length,
   lineSliceAlong,
@@ -13,6 +12,7 @@ import {
 } from '@turf/turf';
 import './AdventureMap.css';
 import visitedCountries from '../data/visited-countries.json';
+import roadLegs from '../data/route-legs.json';
 import { SHEET_QUERY } from '../sheet';
 
 // In dev MapLibre finds its worker next to its own module (see optimizeDeps in vite.config.js).
@@ -23,8 +23,6 @@ if (import.meta.env.PROD) maplibregl.setWorkerUrl(workerUrl);
 const START_VIEW = { center: [10.0, 56.0], zoom: 3.2 };
 const FLY_IN = { zoom: 5.5, duration: 7000, curve: 1.6 };
 
-// Legs longer than this are drawn as great-circle arcs and travelled by plane
-const FLIGHT_KM = 1200;
 
 const EMPTY = { type: 'FeatureCollection', features: [] };
 
@@ -55,6 +53,8 @@ const STYLE = {
 
 // Builds one continuous route through all entries, with the distance (km)
 // at which each entry sits along it and a flight/overland flag per leg.
+// Flights (entry.arrival === 'flight') are drawn as great-circle arcs; every other leg
+// follows the road geometry from route-legs.json (see scripts/build-route.js).
 function buildRoute(entries) {
   const coords = [];
   const entryDist = [];
@@ -69,10 +69,10 @@ function buildRoute(entries) {
       return;
     }
     const prev = coords[coords.length - 1];
-    const flight = distance(prev, here) > FLIGHT_KM;
+    const flight = entry.arrival === 'flight';
     const leg = flight
       ? greatCircle(prev, here, { npoints: 64 }).geometry.coordinates
-      : [prev, here];
+      : (roadLegs[entries[i - 1].id] ?? [prev, here]);
     coords.push(...leg.slice(1));
     const from = total;
     total += length(lineString(leg));
@@ -296,8 +296,8 @@ export default function AdventureMap({
       const heading = bearing(here, ahead);
       const leg = route.legs.find(l => d >= l.from && d <= l.to);
       const flight = leg?.flight ?? false;
-      vehicle.icon.textContent = flight ? '✈️' : '🚐';
-      // ✈️ points north-east in most fonts; the van faces left, so flip it when heading east
+      vehicle.icon.textContent = flight ? '✈️' : '🚌';
+      // ✈️ points north-east in most fonts; the bus faces left, so flip it when heading east
       vehicle.icon.style.transform = flight
         ? `rotate(${heading - 45}deg)`
         : `scaleX(${heading > 0 ? -1 : 1})`;

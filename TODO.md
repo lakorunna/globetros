@@ -17,7 +17,7 @@ Only open items. Ordered by priority; the easter-egg section comes last.
 - [ ] Optional polish: swipe left/right in the photo lightbox, and keep the pin highlighted when returning to the map with the Kort button
 
 ## 4. Travel path
-- [ ] Add waypoints so overland legs follow roads and coastlines instead of straight lines
+- [ ] Correct individual legs where the real journey differed from the road route, such as the ferry from Puntarenas to Paquera on the way to Montezuma, trains and boats (Machu Picchu, Lake Titicaca)
 
 ## 5. Title screen / logo
 - [ ] Design a title screen or logo

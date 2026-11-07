@@ -54,6 +54,14 @@ npm run extract
 
 Note that this overwrites those files. Existing `photos` arrays are kept, but any other hand edits (such as coordinates) would be lost, so check the diff before committing.
 
+## Route geometry
+
+The line on the map follows real roads. `src/data/route-legs.json` holds the road geometry for each overland leg and is built from the public OSRM routing service; flights (`arrival: 'flight'` in the entry list) are drawn as arcs. After changing entries or their coordinates, rebuild it with:
+
+```bash
+npm run route
+```
+
 ## Roadmap
 
 See [TODO.md](TODO.md).
