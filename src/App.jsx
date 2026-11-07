@@ -1,14 +1,18 @@
-import { useState } from 'react';
-import AdventureMap from './components/AdventureMap';
+import { lazy, Suspense, useState } from 'react';
 import JournalPanel from './components/JournalPanel';
 import entries from './data/entries.json';
 import { sheetHeights, useSheetMode, useViewportHeight } from './sheet';
 import './App.css';
 
+// The map (MapLibre) is the heavy part: load it separately so the page shell appears first
+const AdventureMap = lazy(() => import('./components/AdventureMap'));
+
 export default function App() {
   const [selectedEntry, setSelectedEntry] = useState(null);
   // Bottom sheet state on small screens: 'peek' (a bar), 'half' or 'full'
   const [snap, setSnap] = useState('peek');
+  // The opening fly-in shows only the globe; the card slides in once it has landed
+  const [introDone, setIntroDone] = useState(false);
   const sheetMode = useSheetMode();
   const heights = sheetHeights(useViewportHeight());
 
@@ -20,6 +24,7 @@ export default function App() {
 
   // Opening a story from the collapsed bar pulls the sheet up to read it
   function selectEntry(entry) {
+    setIntroDone(true);
     setSelectedEntry(entry);
     if (snap === 'peek') setSnap('half');
   }
@@ -36,13 +41,16 @@ export default function App() {
   return (
     <div className={`app-layout${selectedEntry ? ' panel-open' : ''}`}>
       <div className="map-wrapper">
-        <AdventureMap
-          entries={entries}
-          selectedEntry={selectedEntry}
-          onSelect={selectEntry}
-          sheetMode={sheetMode}
-          bottomInset={bottomInset}
-        />
+        <Suspense fallback={<div className="map-loading" />}>
+          <AdventureMap
+            entries={entries}
+            selectedEntry={selectedEntry}
+            onSelect={selectEntry}
+            onIntroEnd={() => setIntroDone(true)}
+            sheetMode={sheetMode}
+            bottomInset={bottomInset}
+          />
+        </Suspense>
       </div>
       <div className="panel-wrapper">
         <JournalPanel
@@ -52,6 +60,7 @@ export default function App() {
           onClose={closeEntry}
           onNavigate={setSelectedEntry}
           sheetMode={sheetMode}
+          introDone={introDone}
           snap={snap}
           heights={heights}
           onSnapChange={setSnap}

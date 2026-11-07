@@ -104,11 +104,44 @@
   min-width: 0;
 }
 
+.lightbox {
+  touch-action: pan-y; /* horizontal drags are swipes between photos */
+  user-select: none;
+}
+
+.lightbox__figure--from-right {
+  animation: lightbox-from-right 0.25s ease-out;
+}
+
+.lightbox__figure--from-left {
+  animation: lightbox-from-left 0.25s ease-out;
+}
+
+@keyframes lightbox-from-right {
+  from {
+    transform: translateX(40px);
+    opacity: 0.3;
+  }
+}
+
+@keyframes lightbox-from-left {
+  from {
+    transform: translateX(-40px);
+    opacity: 0.3;
+  }
+}
+
 .lightbox__figure img {
   max-width: min(1200px, calc(100vw - 170px));
   max-height: calc(100vh - 130px);
+  width: auto;
+  height: auto;
   object-fit: contain;
-  background: #fff;
+  background-color: #fff;
+  background-size: contain;
+  background-position: center;
+  background-repeat: no-repeat;
+  background-origin: content-box;
   padding: 6px;
   box-shadow: 0 4px 24px rgba(0, 0, 0, 0.6);
 }

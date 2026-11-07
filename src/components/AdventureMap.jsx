@@ -112,7 +112,14 @@ function createPin(entry, onClick) {
 
 const easeInOut = t => (t < 0.5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 3) / 2);
 
-export default function AdventureMap({ entries, selectedEntry, onSelect, sheetMode, bottomInset }) {
+export default function AdventureMap({
+  entries,
+  selectedEntry,
+  onSelect,
+  onIntroEnd,
+  sheetMode,
+  bottomInset,
+}) {
   const containerRef = useRef(null);
   const mapRef = useRef(null);
   const pinsRef = useRef([]);
@@ -122,6 +129,7 @@ export default function AdventureMap({ entries, selectedEntry, onSelect, sheetMo
   const prevCountryRef = useRef(null);
   const rafRef = useRef(0);
   const onSelectRef = useRef(onSelect);
+  const onIntroEndRef = useRef(onIntroEnd);
   // Latest sheet state for the camera code, without re-running it when the sheet moves
   const sheetRef = useRef({ sheetMode, bottomInset });
   const [ready, setReady] = useState(false);
@@ -130,8 +138,9 @@ export default function AdventureMap({ entries, selectedEntry, onSelect, sheetMo
 
   useEffect(() => {
     onSelectRef.current = onSelect;
+    onIntroEndRef.current = onIntroEnd;
     sheetRef.current = { sheetMode, bottomInset };
-  }, [onSelect, sheetMode, bottomInset]);
+  }, [onSelect, onIntroEnd, sheetMode, bottomInset]);
 
   // Create the map, layers, pins and vehicle once
   useEffect(() => {
@@ -238,6 +247,9 @@ export default function AdventureMap({ entries, selectedEntry, onSelect, sheetMo
       // Any touch or drag on the map cancels it.
       const first = entries[0].coordinates;
       const target = { center: [first.lng, first.lat], zoom: FLY_IN.zoom };
+      // Tell the app when the camera stops (arrived, or the visitor took over) so the
+      // journal card can slide in
+      map.once('moveend', () => onIntroEndRef.current?.());
       if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
         map.jumpTo(target);
       } else {

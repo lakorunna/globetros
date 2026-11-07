@@ -128,6 +128,11 @@
   border-radius: 3px;
 }
 
+.journal-panel__status {
+  font-style: italic;
+  color: var(--panel-muted);
+}
+
 .journal-panel__text {
   font-family: var(--font-text);
   font-size: var(--text-size);
@@ -209,6 +214,7 @@
     box-shadow: 0 -6px 24px rgba(0, 0, 0, 0.35);
     pointer-events: auto;
     transition: height 0.32s cubic-bezier(0.2, 0.8, 0.2, 1);
+    animation: sheet-in 0.6s cubic-bezier(0.2, 0.8, 0.2, 1);
   }
 
   .journal-panel--dragging {
@@ -251,4 +257,10 @@
     font-size: 13px;
   }
 
+}
+
+@keyframes sheet-in {
+  from {
+    transform: translateY(100%);
+  }
 }

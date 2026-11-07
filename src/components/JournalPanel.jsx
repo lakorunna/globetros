@@ -1,5 +1,6 @@
 import { useEffect, useRef } from 'react';
 import PhotoGallery from './PhotoGallery';
+import { loadEntryDetail, useEntryDetail } from '../entryDetail';
 import './JournalPanel.css';
 
 // The PDFs hard-wrapped every line at about 80 characters, which looks ragged in a narrower
@@ -16,6 +17,7 @@ export default function JournalPanel({
   onClose,
   onNavigate,
   sheetMode,
+  introDone,
   snap,
   heights,
   onSnapChange,
@@ -24,6 +26,15 @@ export default function JournalPanel({
   const bodyRef = useRef(null);
   const sheetRef = useRef(null);
   const dragRef = useRef(null);
+
+  const { detail, error, loading } = useEntryDetail(entry?.id);
+
+  // Fetch the neighbouring entries ahead of time so stepping through feels instant
+  const prevId = prevEntry?.id;
+  const nextId = nextEntry?.id;
+  useEffect(() => {
+    [prevId, nextId].forEach(id => id != null && loadEntryDetail(id).catch(() => {}));
+  }, [prevId, nextId]);
 
   // Scroll back to top whenever a new entry opens
   const entryId = entry?.id;
@@ -93,7 +104,8 @@ export default function JournalPanel({
     onSnapChange(next);
   }
 
-  if (!entry && !sheetMode) return null;
+  // Nothing to show on desktop until a story is picked, nor on phones until the fly-in has landed
+  if (!entry && (!sheetMode || !introDone)) return null;
 
   const panelClass = `journal-panel${sheetMode ? ' journal-panel--sheet' : ''}`;
 
@@ -150,9 +162,15 @@ export default function JournalPanel({
 
       <div className="journal-panel__body" ref={bodyRef}>
         <div className="journal-panel__content">
-          <p className="journal-panel__text">{reflow(entry.text)}</p>
-          {entry.photos && entry.photos.length > 0 && (
-            <PhotoGallery key={entry.id} photos={entry.photos} title={entry.title} />
+          {loading && <p className="journal-panel__status">Åbner dagbogen…</p>}
+          {error && (
+            <p className="journal-panel__status">
+              Teksten kunne ikke hentes. Tjek forbindelsen og prøv at vælge historien igen.
+            </p>
+          )}
+          {detail && <p className="journal-panel__text">{reflow(detail.text)}</p>}
+          {detail?.photos?.length > 0 && (
+            <PhotoGallery key={entry.id} photos={detail.photos} title={entry.title} />
           )}
         </div>
       </div>

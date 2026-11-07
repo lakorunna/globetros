@@ -34,8 +34,9 @@ src/
     JournalPanel.jsx         sliding panel that shows an entry
     PhotoGallery.jsx         photo grid with captions and a lightbox
   data/
-    entries.json             the 32 entries (text, location, coordinates, photos)
+    entries.json             the 32 entries (title, place, date, coordinates)
     visited-countries.json   country outlines highlighted on the map
+public/entries/              per-entry text and photo list, loaded when an entry is opened
 public/photos/               web-sized photos per entry (1200 px) and thumbnails, matched to the PDFs
 scripts/
   extract-entries.js         one-time extraction of entries from the PDFs
@@ -45,13 +46,13 @@ original_content/            source material: the PDF travel logs, budget files,
 
 ## Regenerating the entries
 
-`entries.json` was generated from the PDFs in `original_content/Travellog/`:
+`src/data/entries.json` and `public/entries/*.json` were generated from the PDFs in `original_content/Travellog/`:
 
 ```bash
 npm run extract
 ```
 
-Note that this overwrites `src/data/entries.json`. Existing `photos` arrays are kept, but any other hand edits (such as coordinates) would be lost, so check the diff before committing.
+Note that this overwrites those files. Existing `photos` arrays are kept, but any other hand edits (such as coordinates) would be lost, so check the diff before committing.
 
 ## Roadmap
 

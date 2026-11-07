@@ -58,3 +58,10 @@
     transition: none;
   }
 }
+
+/* Shown for a moment while the map code loads */
+.map-loading {
+  height: 100%;
+  width: 100%;
+  background: #e8d5a3;
+}

@@ -1,0 +1,6 @@
+# Cloudflare Pages: let browsers keep the photos for a day instead of re-checking each time
+/photos/*
+  Cache-Control: public, max-age=86400
+
+/entries/*
+  Cache-Control: public, max-age=3600

@@ -1,4 +1,4 @@
-import { readFileSync, writeFileSync, readdirSync, existsSync } from 'fs';
+import { readFileSync, writeFileSync, readdirSync, existsSync, mkdirSync } from 'fs';
 import { join, dirname } from 'path';
 import { fileURLToPath } from 'url';
 import { createRequire } from 'module';
@@ -10,7 +10,9 @@ const pdfParse = require('pdf-parse/lib/pdf-parse.js');
 const __dirname = dirname(fileURLToPath(import.meta.url));
 const ROOT = join(__dirname, '..');
 const PDF_DIR = join(ROOT, 'original_content', 'Travellog');
+// The entry list (small, bundled with the app) and the per-entry text and photos (fetched on demand)
 const OUTPUT = join(ROOT, 'src', 'data', 'entries.json');
+const DETAIL_DIR = join(ROOT, 'public', 'entries');
 
 // Pre-assigned metadata and coordinates for each numbered entry
 const METADATA = {
@@ -116,9 +118,14 @@ function parseEntry(rawText) {
 
 async function extractEntries() {
   // Photos were added by hand after the first extraction; keep them when re-extracting
-  const existingPhotos = existsSync(OUTPUT)
-    ? Object.fromEntries(JSON.parse(readFileSync(OUTPUT, 'utf8')).map(e => [e.id, e.photos]))
-    : {};
+  const existingPhotos = {};
+  if (existsSync(DETAIL_DIR)) {
+    for (const f of readdirSync(DETAIL_DIR).filter(f => f.endsWith('.json'))) {
+      const detail = JSON.parse(readFileSync(join(DETAIL_DIR, f), 'utf8'));
+      existingPhotos[detail.id] = detail.photos;
+    }
+  }
+  mkdirSync(DETAIL_DIR, { recursive: true });
 
   const files = readdirSync(PDF_DIR).filter(f => f.endsWith('.pdf'));
 
@@ -158,14 +165,16 @@ async function extractEntries() {
       location: meta.location,
       date,
       coordinates: { lat: meta.lat, lng: meta.lng },
-      text,
-      filename,
-      photos: existingPhotos[num] ?? [],
     });
+    writeFileSync(
+      join(DETAIL_DIR, `${num}.json`),
+      JSON.stringify({ id: num, text, photos: existingPhotos[num] ?? [] }),
+      'utf8',
+    );
   }
 
   writeFileSync(OUTPUT, JSON.stringify(entries, null, 2), 'utf8');
-  console.log(`\nWrote ${entries.length} entries to src/data/entries.json`);
+  console.log(`\nWrote ${entries.length} entries to src/data/entries.json and public/entries/`);
 }
 
 extractEntries().catch(err => {
