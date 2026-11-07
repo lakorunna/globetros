@@ -1,79 +1,121 @@
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useLayoutEffect, useRef, useState } from 'react';
 import { createPortal } from 'react-dom';
 import './PhotoGallery.css';
 
-const SWIPE_DISTANCE = 50; // px a horizontal drag must travel to change photo
+// Full-screen viewer. The photos sit side by side on one wide strip that scrolls horizontally
+// and snaps to each photo, so swiping drags the strip with your finger (native scrolling,
+// momentum and all) instead of swapping images.
+function Lightbox({ photos, startIndex, title, onClose }) {
+  const trackRef = useRef(null);
+  const currentRef = useRef(startIndex);
+  const frameRef = useRef(0);
+  const [current, setCurrent] = useState(startIndex);
 
-export default function PhotoGallery({ photos, title }) {
-  const [openIndex, setOpenIndex] = useState(null);
-  const [direction, setDirection] = useState(0); // +1 = came from the right, -1 = from the left
-  const [dragX, setDragX] = useState(0);
-  const swipeRef = useRef(null);
-  const swipedRef = useRef(false); // a swipe's release can fire a click; don't treat it as a tap-to-close
-  const isOpen = openIndex !== null;
+  // Open on the photo that was tapped
+  useLayoutEffect(() => {
+    const track = trackRef.current;
+    track.scrollLeft = startIndex * track.clientWidth;
+  }, [startIndex]);
 
-  function go(delta) {
-    setOpenIndex(i => {
-      const next = Math.min(Math.max(i + delta, 0), photos.length - 1);
-      if (next !== i) setDirection(delta);
-      return next;
-    });
+  function step(delta) {
+    const track = trackRef.current;
+    track.scrollBy({ left: delta * track.clientWidth, behavior: 'smooth' });
   }
 
-  // Keyboard controls for the lightbox. Registered in the capture phase so Escape
-  // closes the lightbox without also closing the journal panel behind it.
+  // Keyboard controls, registered in the capture phase so Escape closes the viewer
+  // without also closing the journal panel behind it
   useEffect(() => {
-    if (!isOpen) return;
     function handleKey(e) {
-      if (e.key === 'Escape') setOpenIndex(null);
-      else if (e.key === 'ArrowRight') go(1);
-      else if (e.key === 'ArrowLeft') go(-1);
+      if (e.key === 'Escape') onClose();
+      else if (e.key === 'ArrowRight') step(1);
+      else if (e.key === 'ArrowLeft') step(-1);
       else return;
       e.stopPropagation();
     }
     window.addEventListener('keydown', handleKey, true);
     return () => window.removeEventListener('keydown', handleKey, true);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [isOpen, photos.length]);
+  }, [onClose]);
 
-  // Start loading the neighbouring photos so stepping through feels instant
+  // Keep the same photo in view when the window is resized or rotated
   useEffect(() => {
-    if (openIndex === null) return;
-    [openIndex - 1, openIndex + 1].forEach(i => {
-      if (photos[i]) new Image().src = photos[i].src;
-    });
-  }, [openIndex, photos]);
-
-  // Swipe left/right to change photo; the photo follows the finger
-  function handlePointerDown(e) {
-    swipedRef.current = false;
-    swipeRef.current = { x: e.clientX, y: e.clientY, horizontal: false };
-  }
-
-  function handlePointerMove(e) {
-    const swipe = swipeRef.current;
-    if (!swipe) return;
-    const dx = e.clientX - swipe.x;
-    const dy = e.clientY - swipe.y;
-    if (!swipe.horizontal && Math.abs(dx) > 10 && Math.abs(dx) > Math.abs(dy)) {
-      swipe.horizontal = true;
-      e.currentTarget.setPointerCapture(e.pointerId);
+    function handleResize() {
+      const track = trackRef.current;
+      track.scrollLeft = currentRef.current * track.clientWidth;
     }
-    if (swipe.horizontal) setDragX(dx);
+    window.addEventListener('resize', handleResize);
+    return () => window.removeEventListener('resize', handleResize);
+  }, []);
+
+  useEffect(() => () => cancelAnimationFrame(frameRef.current), []);
+
+  // Work out which photo is in view while the strip moves
+  function handleScroll() {
+    cancelAnimationFrame(frameRef.current);
+    frameRef.current = requestAnimationFrame(() => {
+      const track = trackRef.current;
+      if (!track) return;
+      const index = Math.round(track.scrollLeft / track.clientWidth);
+      currentRef.current = index;
+      setCurrent(index);
+    });
   }
 
-  function handlePointerUp(e) {
-    const swipe = swipeRef.current;
-    swipeRef.current = null;
-    if (!swipe?.horizontal) return;
-    swipedRef.current = true;
-    const dx = e.clientX - swipe.x;
-    setDragX(0);
-    if (dx <= -SWIPE_DISTANCE) go(1);
-    else if (dx >= SWIPE_DISTANCE) go(-1);
-  }
+  return createPortal(
+    <div className="lightbox" role="dialog" aria-modal="true">
+      <div className="lightbox__track" ref={trackRef} onScroll={handleScroll}>
+        {photos.map((photo, i) => {
+          // Only photos near the one in view load in full; the rest show their thumbnail
+          const near = Math.abs(i - current) <= 2;
+          const alt = photo.caption ?? `${title} — billede ${i + 1}`;
+          return (
+            <figure
+              key={photo.src}
+              className="lightbox__slide"
+              onClick={e => e.target === e.currentTarget && onClose()}
+            >
+              <img
+                src={near ? photo.src : undefined}
+                width={photo.w}
+                height={photo.h}
+                style={{ backgroundImage: `url(${photo.thumb})` }}
+                alt={near ? alt : ''}
+                draggable={false}
+              />
+              {photo.caption && <figcaption>{photo.caption}</figcaption>}
+            </figure>
+          );
+        })}
+      </div>
 
-  const photo = isOpen ? photos[openIndex] : null;
+      <button className="lightbox__close" onClick={onClose} aria-label="Luk billede">
+        ×
+      </button>
+      <button
+        className="lightbox__arrow lightbox__arrow--prev"
+        onClick={() => step(-1)}
+        disabled={current === 0}
+        aria-label="Forrige billede"
+      >
+        ‹
+      </button>
+      <button
+        className="lightbox__arrow lightbox__arrow--next"
+        onClick={() => step(1)}
+        disabled={current === photos.length - 1}
+        aria-label="Næste billede"
+      >
+        ›
+      </button>
+      <div className="lightbox__count">
+        {current + 1} / {photos.length}
+      </div>
+    </div>,
+    document.body,
+  );
+}
+
+export default function PhotoGallery({ photos, title }) {
+  const [openIndex, setOpenIndex] = useState(null);
 
   return (
     <section className="photo-gallery">
@@ -94,61 +136,13 @@ export default function PhotoGallery({ photos, title }) {
         ))}
       </div>
 
-      {photo && createPortal(
-        <div
-          className="lightbox"
-          onClick={() => {
-            if (swipedRef.current) swipedRef.current = false;
-            else setOpenIndex(null);
-          }}
-          onPointerDown={handlePointerDown}
-          onPointerMove={handlePointerMove}
-          onPointerUp={handlePointerUp}
-          onPointerCancel={handlePointerUp}
-          role="dialog"
-          aria-modal="true"
-        >
-          <button className="lightbox__close" onClick={() => setOpenIndex(null)} aria-label="Luk billede">
-            ×
-          </button>
-          <button
-            className="lightbox__arrow lightbox__arrow--prev"
-            onClick={e => { e.stopPropagation(); go(-1); }}
-            disabled={openIndex === 0}
-            aria-label="Forrige billede"
-          >
-            ‹
-          </button>
-          <figure
-            key={openIndex}
-            className={`lightbox__figure${direction ? ` lightbox__figure--from-${direction > 0 ? 'right' : 'left'}` : ''}`}
-            style={dragX ? { transform: `translateX(${dragX}px)`, animation: 'none' } : undefined}
-            onClick={e => e.stopPropagation()}
-          >
-            {/* The small thumbnail shows instantly behind the full photo while it loads */}
-            <img
-              src={photo.src}
-              width={photo.w}
-              height={photo.h}
-              style={{ backgroundImage: `url(${photo.thumb})` }}
-              alt={photo.caption ?? `${title} — billede ${openIndex + 1}`}
-              draggable={false}
-            />
-            <figcaption>
-              {photo.caption && <span className="lightbox__caption">{photo.caption}</span>}
-              <span className="lightbox__count">{openIndex + 1} / {photos.length}</span>
-            </figcaption>
-          </figure>
-          <button
-            className="lightbox__arrow lightbox__arrow--next"
-            onClick={e => { e.stopPropagation(); go(1); }}
-            disabled={openIndex === photos.length - 1}
-            aria-label="Næste billede"
-          >
-            ›
-          </button>
-        </div>,
-        document.body,
+      {openIndex !== null && (
+        <Lightbox
+          photos={photos}
+          startIndex={openIndex}
+          title={title}
+          onClose={() => setOpenIndex(null)}
+        />
       )}
     </section>
   );
